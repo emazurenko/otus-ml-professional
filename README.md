@@ -25,3 +25,15 @@ conda init --all
 conda activate base
 conda activate otus-ml
 ```
+
+#### Миграция окружения
+Для полного переноса окружения на другую машину можно сначала использовать альтернативные команды по выгрузки окружения в файл:
+```
+conda export -n otus-ml --file=./environment.yaml
+
+conda list -n otus-ml --export > ./package-list.txt
+```
+Затем для воссоздания из файла использовать команду:
+```
+conda create --name otus-ml --file ./environment.yaml
+``` 
