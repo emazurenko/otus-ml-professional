@@ -35,5 +35,5 @@ conda list -n otus-ml --export > ./package-list.txt
 ```
 Затем для воссоздания из файла использовать команду:
 ```
-conda create --name otus-ml --file ./environment.yaml
+conda env create --name otus-ml --file ./environment.yaml
 ``` 
