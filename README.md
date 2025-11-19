@@ -136,3 +136,72 @@ array([[0, 0],
        [1, 2],
        [2, 1]])
 ```
+
+### Работа с данными
+
+#### NumPy
+
+Преобразование элементов массива к массивам из одного элемента:
+
+```
+X = np.array([1,2,3])
+
+print(f'\tX: \n{X}\n\tX asrows: \n{X.reshape(-1,1)}')
+
+	X: 
+[1 2 3]
+	X asrows: 
+[[1]
+ [2]
+ [3]]
+```
+
+Преобразование значений в массиве:
+
+```
+labels = model.labels_
+labels = np.array([1 if label == -1 else 0 for label in labels])
+```
+
+Расчет доли:
+
+```
+outlier_percentage = sum(labels==1) / len(labels)
+```
+
+### Графики
+
+#### matplotlib.pyplot
+
+Объединение двух графиков на одной фигуре при общей независимой переменной и разных зависимых:
+
+```
+fig, ax1 = plt.subplots()
+
+# Общая шкала аргумента
+ax1.set_xlabel('epsilon')
+
+# Совмещение графиков
+ax2 = ax1.twinx()
+
+color = 'tab:red'
+ax1.set_ylabel('number of clusters', color=color)
+ax1.plot(iterations, num_clusters, color=color)
+ax1.tick_params(axis='y', labelcolor=color)
+
+color = 'tab:blue'
+ax2.set_ylabel('anomaly percentage', color=color)
+ax2.plot(iterations, anomaly_percentage, color=color)
+ax2.tick_params(axis='y', labelcolor=color)
+
+fig.tight_layout()
+plt.show()
+```
+
+#### Pandas
+
+График по данным:
+
+```
+summary.sum(axis=1).value_counts().plot.bar()
+```
