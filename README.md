@@ -124,6 +124,7 @@ X = np.array([['LOW', 'RED'],
               ['HIGH', 'GREEN']])
 
 # Индексация определяется порядоком перечисления значений
+# Важно совпадение входящих данных и списков категорий для преобразований
 encoder = OrdinalEncoder(categories=[
     ['LOW', 'MEDIUM', 'HIGH'],
     ['RED', 'GREEN', 'BLUE']
