@@ -33,6 +33,19 @@ conda activate otus-ml
 conda install -n otus-ml lightgbm catboost
 ```
 
+Для установки PyTorch необходимо, чтобы было активировано окружение conda, тогда установка пакета через pip (через conda установить не удаетсяы) приведет к его установке в это окружение:
+
+```
+pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu130
+pip install torchsummary
+```
+Команды для установки можно взять на сайте https://pytorch.org/
+
+Для видеокарты GTX 1050, которая поддерживает только CUDA 6.1 рекомендуют выполнить установку:
+```
+pip install --index-url https://download.pytorch.org/whl/cu121 torch==2.4.1 torchvision==0.19.1 torchaudio==2.4.1
+```
+
 #### Миграция окружения
 Для полного переноса окружения на другую машину можно сначала использовать альтернативные команды по выгрузки окружения в файл:
 ```
