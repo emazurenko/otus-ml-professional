@@ -157,17 +157,35 @@ print(f'\tX: \n{X}\n\tX asrows: \n{X.reshape(-1,1)}')
  [3]]
 ```
 
+Соединение столбцов:
+
+```
+result = np.column_stack((rows, counts))
+```
+
 Преобразование значений в массиве:
 
 ```
+# СПОСОБ 1
 labels = model.labels_
 labels = np.array([1 if label == -1 else 0 for label in labels])
+
+# СПОПОБ 2
+np_labels = np.vectorize(lambda x: dict(c)[x])(np_labels)
+# где
+# dict(c) - словарь ключ-значений
+# np.vectorize - "векторизация" функции и её возврат
 ```
 
 Расчет доли:
 
 ```
 outlier_percentage = sum(labels==1) / len(labels)
+```
+
+Подсчет уникальных значений и их количества
+```
+rows, counts = np.unique(np_labels, axis=0, return_counts=True)
 ```
 
 ### Графики
@@ -198,6 +216,15 @@ ax2.tick_params(axis='y', labelcolor=color)
 fig.tight_layout()
 plt.show()
 ```
+
+Приведение одноразмерного индекса к двухразмерному:
+
+```
+fig, axs = plt.subplots(nrows=2, ncols=2, figsize=(10, 4))
+
+for i, method in enumerate(['ward', 'average', 'weighted', 'centroid', 'single', 'complete']):
+    ax = axs[i//2][i%2]
+``
 
 #### Pandas
 
