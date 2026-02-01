@@ -193,7 +193,16 @@ np_labels = np.vectorize(lambda x: dict(c)[x])(np_labels)
 Расчет доли:
 
 ```
+СПОСОБ 1
 outlier_percentage = sum(labels==1) / len(labels)
+
+СПОСОБ 2
+y_train.value_counts(normalize=True)
+
+Class
+0    0.998271
+1    0.001729
+Name: proportion, dtype: float64
 ```
 
 Подсчет уникальных значений и их количества
@@ -233,10 +242,25 @@ plt.show()
 Приведение одноразмерного индекса к двухразмерному:
 
 ```
+СПОСОБ 1
 fig, axs = plt.subplots(nrows=2, ncols=2, figsize=(10, 4))
 
 for i, method in enumerate(['ward', 'average', 'weighted', 'centroid', 'single', 'complete']):
     ax = axs[i//2][i%2]
+
+СПОСОБ 2
+fig, axes = plt.subplots(2, 6, figsize=(25, 8))
+fig.suptitle('Box-plots')
+
+row=0
+col=0
+
+for ax, feature in enumerate(data_features):
+    data_features[feature].plot.box(ax=axes[row, col])
+    col+=1
+    if col > 5:
+        row+=1
+        col=0
 ``
 
 #### Pandas
@@ -245,4 +269,14 @@ for i, method in enumerate(['ward', 'average', 'weighted', 'centroid', 'single',
 
 ```
 summary.sum(axis=1).value_counts().plot.bar()
+```
+
+Агрегатный расчет перцентилей:
+
+```
+СПОСОБ 1
+X_agg = X_tmp.agg([lambda x: x.quantile(0.25), lambda x: x.quantile(0.75)]).T
+
+СПОСОБ 2
+X_agg = X_tmp.quantile([0.25, 0.75]).T
 ```
