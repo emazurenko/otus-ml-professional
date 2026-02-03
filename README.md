@@ -207,7 +207,11 @@ Name: proportion, dtype: float64
 
 Подсчет уникальных значений и их количества
 ```
+СПОСОБ 1
 rows, counts = np.unique(np_labels, axis=0, return_counts=True)
+
+СПОСОБ 2
+np.bincount(y)
 ```
 
 ### Графики
