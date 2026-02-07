@@ -284,3 +284,35 @@ X_agg = X_tmp.agg([lambda x: x.quantile(0.25), lambda x: x.quantile(0.75)]).T
 СПОСОБ 2
 X_agg = X_tmp.quantile([0.25, 0.75]).T
 ```
+
+#### PyTorch
+
+Активация GPU:
+
+```
+device = torch.device("cuda:0") if torch.cuda.is_available() else torch.device("cpu")
+
+model = model.to(device)
+data, target = data.to(device), target.to(device)
+
+```
+
+Фиксация вопроизводимости:
+
+```
+import numpy as np
+import os
+import random
+import torch
+
+# Зафиксируем seed для воспроизводимости
+
+def seed_everything(seed):
+    random.seed(seed) # фиксируем генератор случайных чисел
+    os.environ['PYTHONHASHSEED'] = str(seed) # фиксируем заполнения хешей
+    np.random.seed(seed) # фиксируем генератор случайных чисел numpy
+    torch.manual_seed(seed) # фиксируем генератор случайных чисел pytorch
+    torch.cuda.manual_seed(seed) # фиксируем генератор случайных чисел для GPU
+    torch.backends.cudnn.deterministic = True # выбираем только детерминированные алгоритмы (для сверток)
+    torch.backends.cudnn.benchmark = False # фиксируем алгоритм вычисления сверток
+```
