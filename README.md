@@ -203,6 +203,11 @@ Class
 0    0.998271
 1    0.001729
 Name: proportion, dtype: float64
+
+СПОСОБ 3
+print(f"Классы: {np.unique(y)}, распределение: {np.bincount(y)}")
+
+Классы: [0 1 2], распределение: [50 50 50]
 ```
 
 Подсчет уникальных значений и их количества
@@ -290,7 +295,7 @@ X_agg = X_tmp.quantile([0.25, 0.75]).T
 Активация GPU:
 
 ```
-device = torch.device("cuda:0") if torch.cuda.is_available() else torch.device("cpu")
+device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
 
 model = model.to(device)
 data, target = data.to(device), target.to(device)
