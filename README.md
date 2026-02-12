@@ -248,6 +248,28 @@ fig.tight_layout()
 plt.show()
 ```
 
+Добавление графиков к фигуре:
+
+```
+figure = plt.figure(figsize=(8, 8))
+cols, rows = 3, 3
+for i in range(1, cols * rows + 1):
+    sample_idx = torch.randint(len(training_data), size=(1,)).item()
+    img, label = training_data[sample_idx]
+    figure.add_subplot(rows, cols, i)
+    plt.title(label)
+    plt.axis("off")
+    plt.imshow(img.squeeze(), cmap="gray") # squeeze() - удаляем все измерения размером 1
+plt.show();
+```
+
+Отключить оси:
+```
+plt.title(label)
+plt.axis("off")
+plt.imshow(img.squeeze(), cmap="gray") 
+```
+
 Приведение одноразмерного индекса к двухразмерному:
 
 ```
@@ -270,7 +292,7 @@ for ax, feature in enumerate(data_features):
     if col > 5:
         row+=1
         col=0
-``
+```
 
 #### Pandas
 
@@ -320,4 +342,68 @@ def seed_everything(seed):
     torch.cuda.manual_seed(seed) # фиксируем генератор случайных чисел для GPU
     torch.backends.cudnn.deterministic = True # выбираем только детерминированные алгоритмы (для сверток)
     torch.backends.cudnn.benchmark = False # фиксируем алгоритм вычисления сверток
+```
+
+Нормализация
+
+Нейронные сети, особенно с методами оптимизации на основе градиента (SGD, Adam), лучше работают, когда входные данные имеют нулевое среднее и сопоставимые масштабы. Нормализация предотвращает проблемы с взрывами/затуханием градиентов + многие активационные функции (sigmoid, tanh) наиболее чувствительны около нуля
+
+```
+СПОСОБ 1
+
+# Загружаем данные MNIST без преобразований (только ToTensor)
+transform = transforms.Compose([
+    # Внимание! В этом случае для изображений значения приводятся к дмиапазону [0;1]
+    # Но видна эта трансформация будет только при работе с DataLoader, т.е. она отложенная
+    transforms.ToTensor()  # Преобразует изображение в тензор
+])
+
+# Загружаем тренировочный датасет
+train_dataset = datasets.MNIST(root='../18_Neural_learning_problems/MNIST_data', train=True, download=True, transform=transform)
+
+# Создаем DataLoader для итерации по данным
+train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=64, shuffle=False)
+
+# Инициализируем переменные для вычисления среднего и std
+mean = 0.0
+std = 0.0
+total_samples = 0
+
+# Вычисляем среднее
+for images, _ in train_loader:
+    batch_samples = images.size(0)  # Количество изображений в батче
+    images = images.view(batch_samples, images.size(1), -1)  # Преобразуем в [batch_size, channels, height*width]
+    # Размерность 2 - "плоское" изображение, т.е. среднее считается по пикселям
+    mean += images.mean(2).sum(0)  # Суммируем среднее по всем изображениям в батче
+    total_samples += batch_samples
+
+mean /= total_samples  # Делим на общее количество изображений
+
+# Вычисляем стандартное отклонение
+for images, _ in train_loader:
+    batch_samples = images.size(0)
+    images = images.view(batch_samples, images.size(1), -1)
+    # sum([0, 2]) - суммирование по двум измерениям сразу, сначала каждый пиксель по всему батчу, затем сумма всех аггрегированных
+    # эквивалентно .sum(0).sum(1)
+    std += ((images - mean.unsqueeze(1)) ** 2).sum([0, 2])  # Суммируем квадраты отклонений
+
+std = torch.sqrt(std / (total_samples * 28 * 28))  # Делим на общее количество пикселей
+
+print("Mean:", mean.item())
+print("Std:", std.item())
+
+# Mean: 0.13066041469573975
+# Std: 0.30810800194740295
+
+СПОСОБ 2
+
+# Деление на 255 происходит с поправкой на то, что при применении трансформации ToTensor максимальное значение пикселя 255 будет приведено к 1
+ 
+t = datasets.MNIST(root='./MNIST_data', train=False, download=True)
+mean = t.data.float().mean() / 255
+std = t.data.float().std() / 255
+(mean, std)
+
+# (tensor(0.1325), tensor(0.3105))
+
 ```
