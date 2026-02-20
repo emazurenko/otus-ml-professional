@@ -292,6 +292,14 @@ for ax, feature in enumerate(data_features):
     if col > 5:
         row+=1
         col=0
+
+СПОСОБ 3
+fig, axes = plt.subplots(2, 5, figsize=(15, 6))
+for i, ax in enumerate(axes.flat):
+    img, label = train_data[i]
+    ax.imshow(img.permute(1, 2, 0) * 0.5 + 0.5)  # Денормализация
+    ax.set_title(classes[label])
+    ax.axis('off')
 ```
 
 #### Pandas
