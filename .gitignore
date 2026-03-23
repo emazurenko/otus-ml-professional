@@ -1,1 +1,9 @@
 /.idea
+homeworks/03_AnomalyDetection/creditcard.csv
+/lessons/18_Neural_learning_problems/MNIST_data
+/lessons/20_CNN/EuroSAT_data
+/lessons/20_CNN/FashionMNIST_data
+/lessons/20_CNN/saved_models
+/lessons/20_CNN/images
+/lessons/20_CNN/videos
+/lessons/20_CNN/yolo_models
