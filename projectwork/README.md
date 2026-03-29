@@ -37,3 +37,12 @@ sqlite> .import ./candles_dump.csv candle
 - [create_candle_table.sql](./sql/create_candle_table.sql) - создание таблицы для исходных часовых показателей цены.
 - [create_candle_h12_view.sql](./sql/create_candle_h12_view.sql) - создание представления для агрегации исходных показателей цены в 12-часовые периоды и расчет скользящих средних для них.
 - [select_combinations.sql](./select_combinations.sql) - скрипт отбора комбинаций для дальнейшей предобработки и последующих вычислений.
+
+#### Зависимости
+
+Дополнительно установил следующие зависимости:
+
+1. Визуализация финансовых графиков, [mplfinance](https://github.com/matplotlib/mplfinance)
+```
+pip install --upgrade mplfinance
+```
