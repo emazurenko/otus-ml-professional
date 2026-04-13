@@ -1,7 +1,8 @@
 CREATE VIEW candle_h12 AS
 SELECT t.*,
        avg(t.close) OVER (PARTITION BY t.currency ORDER BY t.dtime rows between 4 preceding and current row) ma5,
-       avg(t.close) OVER (PARTITION BY t.currency ORDER BY t.dtime rows between 9 preceding and current row) ma10
+       avg(t.close) OVER (PARTITION BY t.currency ORDER BY t.dtime rows between 9 preceding and current row) ma10,
+       avg(t.close) OVER (PARTITION BY t.currency ORDER BY t.dtime rows between 14 preceding and current row) ma15
   FROM (
          SELECT DISTINCT 
                 t.currency,
