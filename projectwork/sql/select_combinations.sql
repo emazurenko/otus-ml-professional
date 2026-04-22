@@ -90,3 +90,4 @@ SELECT t1.currency,
       --  ON t7.rn = t6.rn + 1
       --     AND t7.currency = t6.currency
   WHERE t1.currency = 'AUD'
+        AND t1.rn < 1000
