@@ -60,7 +60,7 @@ SELECT t1.currency,
        t6.close t6_close,
        t6.ma5 t6_ma5,
        t6.ma10 t6_ma10,
-       t6.ma15 t6_ma15
+       t6.ma15 t6_ma15,
       --  t7.dtime t7_dtime,
       --  t7.open t7_open,
       --  t7.high t7_high,
@@ -69,7 +69,7 @@ SELECT t1.currency,
       --  t7.ma5 t7_ma5,
       --  t7.ma10 t7_ma10,
       --  t7.ma15 t7_ma15
-      --  COALESCE((SELECT label FROM class WHERE currency = t6.currency and dtime = t6.dtime), 0) class
+       COALESCE((SELECT label FROM class WHERE currency = t6.currency and dtime = t6.dtime), 0) class
   FROM t as t1
        INNER JOIN t as t2
        ON t2.rn = t1.rn + 1
