@@ -46,3 +46,8 @@ sqlite> .import ./candles_dump.csv candle
 ```
 pip install --upgrade mplfinance
 ```
+
+2. Подбор гиперпараметров, [optuna]()
+```
+pip install optuna
+```

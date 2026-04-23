@@ -11,7 +11,6 @@ WITH t AS (
              CAST(c.ma10 AS REAL) ma10
         FROM candle_h12 c
 )
-
 SELECT t1.currency,
        t1.dtime t1_dtime,
        t1.open t1_open,
@@ -60,16 +59,8 @@ SELECT t1.currency,
        t6.close t6_close,
        t6.ma5 t6_ma5,
        t6.ma10 t6_ma10,
-       t6.ma15 t6_ma15,
-      --  t7.dtime t7_dtime,
-      --  t7.open t7_open,
-      --  t7.high t7_high,
-      --  t7.low t7_low,
-      --  t7.close t7_close,
-      --  t7.ma5 t7_ma5,
-      --  t7.ma10 t7_ma10,
-      --  t7.ma15 t7_ma15
-       COALESCE((SELECT label FROM class WHERE currency = t6.currency and dtime = t6.dtime), 0) class
+       t6.ma15 t6_ma15
+      --  COALESCE((SELECT label FROM class WHERE currency = t6.currency and dtime = t6.dtime), 0) class
   FROM t as t1
        INNER JOIN t as t2
        ON t2.rn = t1.rn + 1
@@ -86,8 +77,5 @@ SELECT t1.currency,
        INNER JOIN t as t6
        ON t6.rn = t5.rn + 1
           AND t6.currency = t5.currency
-      --  INNER JOIN t as t7
-      --  ON t7.rn = t6.rn + 1
-      --     AND t7.currency = t6.currency
-  WHERE t1.currency = 'AUD'
-        AND t1.rn < 1000
+--   WHERE t1.currency = 'AUD'
+      --   AND t1.rn < 1000
